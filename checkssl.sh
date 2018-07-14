@@ -1,8 +1,12 @@
 #!/bin/bash
 
 MSG=""
-if [ -f doms ]; then
-    DOMS=$(cat doms)
+
+SCRIPT_DIR="`echo "$0" | rev | cut -d/ -f2- | rev`/"
+DOMS_FILE=$SCRIPT_DIR"doms"
+
+if [ -f $DOMS_FILE ]; then
+    DOMS=$(cat $DOMS_FILE)
 else
     echo "file doms doesn't exist, create a file named doms with domain names, 1 domain per line"
     echo "i.e: file doms: "
