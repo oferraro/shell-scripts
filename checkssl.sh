@@ -18,7 +18,8 @@ fi
 
 for DOM in $DOMS; do 
     echo "checking $DOM"
-    DOM_CERT=$(echo openssl s_client  -connect $DOM:443 2>/dev/null)
+    DOM_CERT=$(echo openssl s_client -servername $DOM -connect $DOM:443 2>/dev/null)
+
     EXPDATE=`date --date="$(echo | $DOM_CERT 2>/dev/null | openssl x509 -noout -issuer -subject -dates 2>/dev/null | grep -i notafter | cut -d = -f 2)" --iso-8601`
     CURDATE=`date --iso-8601`
     
@@ -55,7 +56,7 @@ for DOM in $DOMS; do
         MSG="$MSG for $DOM Certificate invalid for this domain \n"
         TXT_CERT=`echo | $DOM_CERT` 
     fi
-    echo "checked $DOM"
+    echo "----------- checked $DOM"
 done
 
 if [ ! -z "$MSG" ]; then
